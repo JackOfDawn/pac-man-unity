@@ -1,0 +1,9 @@
+C:\Users\student\Desktop\JackStorm\pac-man-unity\TakeTwo\obj\Debug\UnityVS.TakeTwo.CSharp.csprojResolveAssemblyReference.cache
+C:\Users\student\Desktop\JackStorm\pac-man-unity\TakeTwo\Temp\UnityVS_bin\Debug\Assembly-CSharp.dll
+C:\Users\student\Desktop\JackStorm\pac-man-unity\TakeTwo\Temp\UnityVS_bin\Debug\Assembly-CSharp.pdb
+C:\Users\student\Desktop\JackStorm\pac-man-unity\TakeTwo\Temp\UnityVS_bin\Debug\UnityEditor.dll
+C:\Users\student\Desktop\JackStorm\pac-man-unity\TakeTwo\Temp\UnityVS_bin\Debug\UnityEngine.dll
+C:\Users\student\Desktop\JackStorm\pac-man-unity\TakeTwo\Temp\UnityVS_bin\Debug\UnityEngine.xml
+C:\Users\student\Desktop\JackStorm\pac-man-unity\TakeTwo\Temp\UnityVS_bin\Debug\UnityEditor.xml
+C:\Users\student\Desktop\JackStorm\pac-man-unity\TakeTwo\obj\Debug\Assembly-CSharp.dll
+C:\Users\student\Desktop\JackStorm\pac-man-unity\TakeTwo\obj\Debug\Assembly-CSharp.pdb
