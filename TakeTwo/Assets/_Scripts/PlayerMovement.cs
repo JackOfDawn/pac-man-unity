@@ -41,8 +41,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if(col.gameObject.tag == "Wall")
         {
-            this.currentDirection = Direction.NONE;
-            transform.Translate(Vector3.back * .2f);
+           // this.currentDirection = Direction.NONE;
+            //transform.Translate(Vector3.back * .2f);
         }
     }
 
@@ -50,6 +50,10 @@ public class PlayerMovement : MonoBehaviour
 	void Update () 
     {
         checkBoundaries();
+        if(!canMoveForward)
+        {
+            this.currentDirection = Direction.NONE;
+        }
         updateQueuedDirection();
         handleQueuedDirection();
        
@@ -63,15 +67,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void checkBoundaries()
     {
+        Vector3 fwd = transform.TransformDirection(Vector3.forward);
         Vector3 left = transform.TransformDirection(Vector3.left);
         Vector3 right = transform.TransformDirection(Vector3.right);
-        Vector3 frontPos = transform.TransformDirection(Vector3.forward * transform.localScale.z/2) + transform.localPosition; //get the front middle of the cube
-        Vector3 backPos = transform.TransformDirection(Vector3.back * transform.localScale.z / 2) + transform.localPosition; // get the back middle
+        Vector3 frontPos = transform.TransformDirection(Vector3.forward * transform.localScale.z * .9f) + transform.localPosition; //get the front middle of the cube
+        Vector3 backPos = transform.TransformDirection(Vector3.back * transform.localScale.z * .9f) + transform.localPosition; // get the back middle
         //check left boundaries
-        bool frontLeftOpen = !Physics.Raycast(frontPos, left, transform.localScale.x);
-        bool backLeftOpen = !Physics.Raycast(backPos, left, transform.localScale.x);
+        bool frontLeftOpen = !Physics.Raycast(frontPos, left, 1.5f * transform.localScale.x);
+        bool midLeftOpen = !Physics.Raycast(transform.position, left, 1.5f * transform.localScale.x);
+        bool backLeftOpen = !Physics.Raycast(backPos, left, (1.5f * transform.localScale.x));
 
-        if(backLeftOpen && frontLeftOpen)
+        if(backLeftOpen && frontLeftOpen && midLeftOpen)
         {
             canTurnLeft = true;
         }
@@ -79,34 +85,30 @@ public class PlayerMovement : MonoBehaviour
         {
             canTurnLeft = false;
         }
-        /*
-        if(frontLeftOpen)
-            Debug.DrawRay(frontPos, left);
-        else
-            Debug.DrawRay(frontPos, left, Color.red);
-
-        if(backLeftOpen)
-            Debug.DrawRay(backPos,left);
-        else
-            Debug.DrawRay(backPos, left, Color.red);
-        */
         
         //check right boundaries
-        bool frontRightOpen = !Physics.Raycast(frontPos, right, transform.localScale.x);
-        bool backRightOpen = !Physics.Raycast(backPos, right, transform.localScale.x);
+        bool frontRightOpen = !Physics.Raycast(frontPos, right, 1.5f * transform.localScale.x);
+        bool backRightOpen = !Physics.Raycast(backPos, right, 1.5f * transform.localScale.x);
+        bool midRightOpen = !Physics.Raycast(transform.position, right, 1.5f * transform.localScale.x);
 
-        if(frontRightOpen && backRightOpen)
+        if(frontRightOpen && backRightOpen && midRightOpen)
         {
             canTurnRight = true;
-            print("can turn right");
         }
         else
         {
             canTurnRight = false;
-            print("can't turn right");
         }
 
         //check front boundaries
+        if(!Physics.Raycast(transform.position, fwd,  transform.localScale.x))
+        {
+            canMoveForward = true;
+        }
+        else
+        {
+            canMoveForward = false;
+        }
     }
 
     private void setDirections()
