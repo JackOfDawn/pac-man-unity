@@ -14,9 +14,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public float moveSpeed = 5;
+    public Vector3 startPos;
+
     public Direction currentDirection = Direction.NORTH;
     private Direction queuedDirection = Direction.NONE;
-    
     private Direction leftDirection;
     private Direction rightDirection;
     private Direction backDirection;
@@ -28,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        
+        transform.position = startPos;
         setDirections();
         canTurnLeft = false;
         canTurnRight = false;

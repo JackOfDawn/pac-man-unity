@@ -5,15 +5,16 @@ public class CameraMovement : MonoBehaviour {
 
     public GameObject player;
     public float yOffset;
+    public float zOffset;
     private Vector3 offset;
 
 	void Start () 
     {
-        offset = new Vector3(0, yOffset, 0);
+        //offset = new Vector3(0, yOffset, 0);
 	}
 	
 	void LateUpdate () 
     {
-        transform.position = new Vector3(0, player.transform.position.y + yOffset, player.transform.position.z);
+        transform.position = new Vector3(0, player.transform.position.y + yOffset, player.transform.position.z + zOffset);
 	}
 }
