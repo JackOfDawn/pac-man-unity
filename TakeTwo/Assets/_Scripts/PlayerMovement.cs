@@ -72,10 +72,13 @@ public class PlayerMovement : MonoBehaviour
         Vector3 right = transform.TransformDirection(Vector3.right);
         Vector3 frontPos = transform.TransformDirection(Vector3.forward * transform.localScale.z * .9f) + transform.localPosition; //get the front middle of the cube
         Vector3 backPos = transform.TransformDirection(Vector3.back * transform.localScale.z * .9f) + transform.localPosition; // get the back middle
+        int wallMask = 1 << LayerMask.NameToLayer("Wall");
+        int warpMask = 1 << LayerMask.NameToLayer("Warp");
+
         //check left boundaries
-        bool frontLeftOpen = !Physics.Raycast(frontPos, left, 1.5f * transform.localScale.x);
-        bool midLeftOpen = !Physics.Raycast(transform.position, left, 1.5f * transform.localScale.x);
-        bool backLeftOpen = !Physics.Raycast(backPos, left, (1.5f * transform.localScale.x));
+        bool frontLeftOpen = !Physics.Raycast(frontPos, left, 1.5f * transform.localScale.x, wallMask);
+        bool midLeftOpen = !Physics.Raycast(transform.position, left, 1.5f * transform.localScale.x, wallMask);
+        bool backLeftOpen = !Physics.Raycast(backPos, left, (1.5f * transform.localScale.x), wallMask);
 
         if(backLeftOpen && frontLeftOpen && midLeftOpen)
         {
@@ -87,9 +90,9 @@ public class PlayerMovement : MonoBehaviour
         }
         
         //check right boundaries
-        bool frontRightOpen = !Physics.Raycast(frontPos, right, 1.5f * transform.localScale.x);
-        bool backRightOpen = !Physics.Raycast(backPos, right, 1.5f * transform.localScale.x);
-        bool midRightOpen = !Physics.Raycast(transform.position, right, 1.5f * transform.localScale.x);
+        bool frontRightOpen = !Physics.Raycast(frontPos, right, 1.5f * transform.localScale.x, wallMask);
+        bool backRightOpen = !Physics.Raycast(backPos, right, 1.5f * transform.localScale.x, wallMask);
+        bool midRightOpen = !Physics.Raycast(transform.position, right, 1.5f * transform.localScale.x, wallMask);
 
         if(frontRightOpen && backRightOpen && midRightOpen)
         {
@@ -101,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //check front boundaries
-        if(!Physics.Raycast(transform.position, fwd,  transform.localScale.x))
+        if (!Physics.Raycast(transform.position, fwd, transform.localScale.x, wallMask))
         {
             canMoveForward = true;
         }
@@ -109,6 +112,12 @@ public class PlayerMovement : MonoBehaviour
         {
             canMoveForward = false;
         }
+
+        if(Physics.Raycast(transform.position, fwd, transform.localScale.x, warpMask))
+        {
+            transform.position = new Vector3(-transform.position.x,transform.position.y, transform.position.z);
+        }
+        
     }
 
     private void setDirections()
@@ -170,34 +179,25 @@ public class PlayerMovement : MonoBehaviour
             queuedDirection = Direction.NONE;
             setDirections();
         }
-        
-        
-        //throw new System.NotImplementedException();
     }
 
     private void updateQueuedDirection()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            queuedDirection = Direction.WEST;
-         
-            //transform.rotation = Quaternion.Euler(new Vector3(0,-90,0)); //go left
-            
+            queuedDirection = Direction.WEST; 
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             queuedDirection = Direction.EAST;
-            //transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0)); //go right
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             queuedDirection = Direction.NORTH;
-            //transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0)); //north
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             queuedDirection = Direction.SOUTH;
-            //transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0)); //go south
         }
         
     }
