@@ -1,32 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerMovement : MonoBehaviour 
+public class PlayerMovement : BaseMovement 
 {
-
-    public enum Direction
-    {
-        NORTH = 0,
-        SOUTH,
-        EAST,
-        WEST,
-        NONE
-    }
 
     public float moveSpeed = 5;
     public Vector3 startPos;
 
-    public Direction currentDirection = Direction.NORTH;
-    private Direction queuedDirection = Direction.NONE;
-    private Direction leftDirection;
-    private Direction rightDirection;
-    private Direction backDirection;
-
-    private bool canTurnLeft;
-    private bool canTurnRight;
-    private bool canMoveForward;
-
-	// Use this for initialization
 	void Start () 
     {
         transform.position = startPos;
@@ -36,11 +16,9 @@ public class PlayerMovement : MonoBehaviour
         canMoveForward = false;
 	}
 	
-	
-
     void OnCollisionEnter(Collision col)
     {
-
+        //use this for the ghosts
     }
 
     // Update is called once per frame
@@ -49,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
         checkBoundaries();
         if(!canMoveForward)
         {
-            this.currentDirection = Direction.NONE;
+            currentDirection = Direction.NONE;
         }
         updateQueuedDirection();
         handleQueuedDirection();
@@ -62,85 +40,8 @@ public class PlayerMovement : MonoBehaviour
         
 	}
 
-    private void checkBoundaries()
-    {
-        Vector3 fwd = transform.TransformDirection(Vector3.forward);
-        Vector3 left = transform.TransformDirection(Vector3.left);
-        Vector3 right = transform.TransformDirection(Vector3.right);
-        Vector3 frontPos = transform.TransformDirection(Vector3.forward * transform.localScale.z * .9f) + transform.localPosition; //get the front middle of the cube
-        Vector3 backPos = transform.TransformDirection(Vector3.back * transform.localScale.z * .9f) + transform.localPosition; // get the back middle
-        int wallMask = 1 << LayerMask.NameToLayer("Wall");
-
-        //check left boundaries
-        bool frontLeftOpen = !Physics.Raycast(frontPos, left, 1.5f * transform.localScale.x, wallMask);
-        bool midLeftOpen = !Physics.Raycast(transform.position, left, 1.5f * transform.localScale.x, wallMask);
-        bool backLeftOpen = !Physics.Raycast(backPos, left, (1.5f * transform.localScale.x), wallMask);
-
-        if(backLeftOpen && frontLeftOpen && midLeftOpen)
-        {
-            canTurnLeft = true;
-        }
-        else
-        {
-            canTurnLeft = false;
-        }
-        
-        //check right boundaries
-        bool frontRightOpen = !Physics.Raycast(frontPos, right, 1.5f * transform.localScale.x, wallMask);
-        bool backRightOpen = !Physics.Raycast(backPos, right, 1.5f * transform.localScale.x, wallMask);
-        bool midRightOpen = !Physics.Raycast(transform.position, right, 1.5f * transform.localScale.x, wallMask);
-
-        if(frontRightOpen && backRightOpen && midRightOpen)
-        {
-            canTurnRight = true;
-        }
-        else
-        {
-            canTurnRight = false;
-        }
-
-        //check front boundaries
-        if (!Physics.Raycast(transform.position, fwd, transform.localScale.x, wallMask))
-        {
-            canMoveForward = true;
-        }
-        else
-        {
-            canMoveForward = false;
-        }
-        
-    }
-
-    private void setDirections()
-    {
-        switch(currentDirection)
-        {
-            case Direction.NORTH:
-                leftDirection = Direction.WEST;
-                rightDirection = Direction.EAST;
-                backDirection = Direction.SOUTH;
-                break;
-            case Direction.SOUTH:
-                leftDirection = Direction.EAST;
-                rightDirection = Direction.WEST;
-                backDirection = Direction.NORTH;
-                break;
-            case Direction.EAST:
-                leftDirection = Direction.NORTH;
-                rightDirection = Direction.SOUTH;
-                backDirection = Direction.WEST;
-                break;
-            case Direction.WEST:
-                leftDirection = Direction.SOUTH;
-                rightDirection = Direction.NORTH;
-                backDirection = Direction.EAST;
-                break;
-            default: //if currentDirection is none, then the player has stopped moving, no need to change anything;
-                break;
-        }
-    }
-
-    private void handleQueuedDirection()
+  
+    protected override void handleQueuedDirection()
     {
         bool turned = false;
         if(queuedDirection == Direction.NONE)
@@ -172,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void updateQueuedDirection()
+    protected override void updateQueuedDirection()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {

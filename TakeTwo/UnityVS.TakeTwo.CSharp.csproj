@@ -48,8 +48,11 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\_Scripts\BaseMovement.cs" />
     <Compile Include="Assets\_Scripts\CameraMovement.cs" />
     <Compile Include="Assets\_Scripts\GeneratePitchSound.cs" />
+    <Compile Include="Assets\_Scripts\GhostMovementSeek.cs" />
+    <Compile Include="Assets\_Scripts\GhostMovementWander.cs" />
     <Compile Include="Assets\_Scripts\PelletEvent.cs" />
     <Compile Include="Assets\_Scripts\PelletSpawner.cs" />
     <Compile Include="Assets\_Scripts\PlayerMovement.cs" />

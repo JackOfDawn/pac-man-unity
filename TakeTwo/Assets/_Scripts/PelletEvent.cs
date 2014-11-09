@@ -3,12 +3,6 @@ using System.Collections;
 
 public class PelletEvent : MonoBehaviour {
 
-    private static float pitch;
-
-    void Awake()
-    {
-        pitch = .5f;
-    }
 
     void OnTriggerEnter(Collider other)
     {
