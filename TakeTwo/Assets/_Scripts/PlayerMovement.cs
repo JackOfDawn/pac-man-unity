@@ -40,11 +40,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if(col.gameObject.tag == "Wall")
-        {
-           // this.currentDirection = Direction.NONE;
-            //transform.Translate(Vector3.back * .2f);
-        }
+
     }
 
     // Update is called once per frame
@@ -74,7 +70,6 @@ public class PlayerMovement : MonoBehaviour
         Vector3 frontPos = transform.TransformDirection(Vector3.forward * transform.localScale.z * .9f) + transform.localPosition; //get the front middle of the cube
         Vector3 backPos = transform.TransformDirection(Vector3.back * transform.localScale.z * .9f) + transform.localPosition; // get the back middle
         int wallMask = 1 << LayerMask.NameToLayer("Wall");
-        int warpMask = 1 << LayerMask.NameToLayer("Warp");
 
         //check left boundaries
         bool frontLeftOpen = !Physics.Raycast(frontPos, left, 1.5f * transform.localScale.x, wallMask);
@@ -112,11 +107,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             canMoveForward = false;
-        }
-
-        if(Physics.Raycast(transform.position, fwd, transform.localScale.x, warpMask))
-        {
-            transform.position = new Vector3(-transform.position.x,transform.position.y, transform.position.z);
         }
         
     }
