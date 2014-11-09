@@ -10,8 +10,6 @@ public class GhostMovementSeek : BaseMovement {
     public GameObject Player;
     private Vector3 target;
 
-
-
 	// Use this for initialization
 	void Start () 
     {
@@ -21,6 +19,7 @@ public class GhostMovementSeek : BaseMovement {
         canTurnLeft = false;
         canTurnRight = false;
         canMoveForward = false;
+       
 	}
 	
 	// Update is called once per frame
@@ -32,8 +31,11 @@ public class GhostMovementSeek : BaseMovement {
         {
             currentDirection = Direction.NONE;
         }
+
         updateQueuedDirection();
+
         handleQueuedDirection();
+
         //Vector3 newTarget = (target - transform.position);
         //newTarget.Normalize();
         //transform.Translate(newTarget * Time.deltaTime * moveSpeed);
@@ -126,6 +128,7 @@ public class GhostMovementSeek : BaseMovement {
             currentDirection = queuedDirection;
             queuedDirection = Direction.NONE;
             setDirections();
+         
         }
     }
 }
